@@ -15,14 +15,14 @@ public:
 	};
 
 	// Behaviors
-	void printForward() const {;
+	void printForward() const {
 		Node* current = head;
 		while (current != nullptr){
 			std::cout << current->data << " ";
 			current = current->next;
 		}
 	}
-	void printReverse() const;{
+	void printReverse() const {
 		Node* current = tail;
 		while (current != nullptr){
 			std::cout << current->data << " ";
@@ -51,25 +51,27 @@ public:
 	// Insertion
 	void addHead(const T& data){
 		Node* newHead = new Node{data, nullptr, head};
-		head->prev = newHead
+		if (head != nullptr) {head->prev = newHead;}
+		else {tail = newHead;}
 		head = newHead;
 		count++;
 	}
 	void addTail(const T& data){
 		Node* newTail = new Node{data, tail, nullptr};
-		tail->next = newTail;
+		if (tail != nullptr) {tail->next = newTail;}
+		else {head = newTail;}
 		tail = newTail;
 		count++;
 	}
 
 	// Removal
 	bool removeHead(){
-		if (head == nullptr) {return false;}
+		if (head == nullptr) {return false;};
 		Node* old = head;
 		head = head->next;
 		delete old;
 		count--;
-		if (head == nullptr) {tail = nullptr}
+		if (head == nullptr) {tail = nullptr;}
 		else {head->prev = nullptr;}
 		return true;
 	}
