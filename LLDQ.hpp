@@ -18,19 +18,57 @@ public:
     LLDQ();
 
     // Core Insertion Operations
-    void pushFront(const T& item) override;
-    void pushBack(const T& item) override;
+    void pushFront(const T& item) override{
+        list.addHead(item);
+    }
+    void pushBack(const T& item) override{
+        list.addTail(item);
+    }
 
     // Core Removal Operations
-    T popFront() override;
-    T popBack() override;
+    T popFront() override{
+        if (list.getCount() == 0) {
+            throw std::runtime_error("Cannot pop an empty dequeue");
+        }
+        T data = list.getHead()->data;
+        list.removeHead();
+        return data;
+    }
+    T popBack() override{
+        if (list.getCount() == 0) {
+            throw std::runtime_error("Cannot pop an empty dequeue");
+        }
+        T data = list.getTail()->data;
+        list.removeTail();
+        return data;
+    }
 
     // Element Accessors
-    const T& front() const override;
-    const T& back() const override;
+    const T& front() const override{
+        if (list.getCount() == 0) {
+            throw std::runtime_error("Cannot access an empty dequeue");
+        }
+        return list.getHead()->data;
+    }
+    const T& back() const override{
+        if (list.getCount() == 0) {
+            throw std::runtime_error("Cannot access an empty dequeue");
+        }
+        return list.getTail()->data;
+    }
 
     // Getter
-    std::size_t getSize() const noexcept override;
+    std::size_t getSize() const noexcept override{
+        return list.getCount();
+    }
+
+    void PrintForward() const {
+        list.printForward();
+    }
+
+    void PrintReverse() const {
+        list.printReverse();
+    }
 };
 
 
