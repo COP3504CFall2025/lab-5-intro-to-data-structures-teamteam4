@@ -90,7 +90,7 @@ public:
         other.data_ = nullptr;
     }
 
-    ~ABDQ() override{
+    ~ABDQ() {
         delete[] data_;
     }
 

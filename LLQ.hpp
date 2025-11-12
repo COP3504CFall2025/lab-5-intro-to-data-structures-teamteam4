@@ -30,7 +30,7 @@ public:
 
     // Access
     T peek() const override {
-        if (list.getCount == 0){
+        if (list.getCount() == 0){
             throw std::runtime_error("Nothing in the queue to peek");
         }
         return list.getHead()->data;
