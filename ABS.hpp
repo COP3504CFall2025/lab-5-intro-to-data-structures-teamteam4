@@ -116,9 +116,9 @@ public:
         if (curr_size_ == 0){
             throw std::runtime_error("Nothing in array to pop");
         }
-        T value = array_[curr_size_];
+        T value = array_[curr_size_ - 1];
         curr_size_--;
-        if (curr_size_ <= capacity_/4){
+        if (capacity_ > 4 && curr_size_ <= capacity_/4){
             std::size_t oldCapacity = capacity_;
             capacity_ /= 2;
             T* tempArray = new T[capacity_];
