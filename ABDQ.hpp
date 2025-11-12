@@ -9,11 +9,11 @@
 template <typename T>
 class ABDQ : public DequeInterface<T> {
 private:
-    T* data_;                 // underlying dynamic array
     std::size_t capacity_;    // total allocated capacity
     std::size_t size_;        // number of stored elements
     std::size_t front_;       // index of front element
     std::size_t back_;        // index after the last element (circular)
+    T* data_;                 // underlying dynamic array
 
     static constexpr std::size_t SCALE_FACTOR = 2;
 
@@ -113,14 +113,9 @@ public:
 
     void ensureCapacity(){
         if (size_ == capacity_){
-            if (capacity_ == 0){
-                capacity_ = 1;
-                return;
-            }
             std::size_t oldCapacity_ = capacity_;
-            capacity_ *= SCALE_FACTOR;
+            capacity_ = (capacity_ = 0) ? 1 : capacity_ *= SCALE_FACTOR;
             T* tempArray = new T[capacity_];
-
             for (std::size_t i = 0 ; i < size_; i++){
                 tempArray[i] = data_[(front_ + i) % oldCapacity_];
             }

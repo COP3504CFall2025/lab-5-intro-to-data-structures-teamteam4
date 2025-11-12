@@ -116,7 +116,12 @@ public:
         if (curr_size_ == 0){
             throw std::runtime_error("Nothing in array to pop");
         }
+        T value = array_[curr_size_];
         curr_size_--;
+        if (capacity_ == 2 && size <= 1){
+            capacity_ = 1;
+            return;
+        }
         if (curr_size_ <= capacity_/4){
             std::size_t oldCapacity = capacity_;
             capacity_ /= 2;
@@ -127,7 +132,7 @@ public:
             delete[] array_;
             array_ = tempArray;
         }
-        return array_[curr_size_];
+        return value;
     }
 
     void PrintForward() const{
