@@ -117,13 +117,7 @@ public:
             throw std::runtime_error("Nothing in array to pop");
         }
         capacity_--;
-        T* tempArray = new T[capacity_];
-        for (size_t i = 0; i < curr_size_ - 1; i++){
-            tempArray[i] = array_[i];
-        }
         curr_size_--;
-        delete[] array_;
-        array_ = tempArray;
         return array_[curr_size_];
     }
 

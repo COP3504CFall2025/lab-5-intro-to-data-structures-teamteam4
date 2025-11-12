@@ -147,6 +147,7 @@ public:
         T temp = data_[front_];
         front_ = (front_ + 1) % capacity_;
         size_--;
+        shrinkIfNeeded();
         return temp;
     }
 
@@ -157,6 +158,7 @@ public:
         back_ = (back_ - 1 + capacity_) % capacity_;
         T temp = data_[back_];
         size_--;
+        shrinkIfNeeded();
         return temp;
     }
 
