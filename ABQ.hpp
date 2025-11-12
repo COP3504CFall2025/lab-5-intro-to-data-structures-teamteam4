@@ -120,11 +120,15 @@ public:
         if (curr_size_ == 0){
             throw std::runtime_error("Nothing in array to dequeue");
         }
+        capacity_--;
+        T* tempArray = new T[capacity_];
         T temp = array_[0];
         for (size_t i = 0; i < curr_size_ - 1; i++){
-            array_[i] = array_[i+1];
+            tempArray[i] = array_[i+1];
         }
         curr_size_--;
+        delete[] array_;
+        array_ = tempArray;
         return temp;
     }
 
