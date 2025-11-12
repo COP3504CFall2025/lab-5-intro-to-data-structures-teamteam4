@@ -70,7 +70,9 @@ public:
         for (std::size_t i = 0 ; i < other.size_; i++){
             data_[i] = other.data_[(other.front_ + i) % other.capacity_];
         }
+        return *this;
     }
+
     ABDQ& operator=(ABDQ&& other) noexcept{ //move assignment
 		if (this == &other){
 			return *this;
@@ -88,6 +90,7 @@ public:
         other.front_ = 0;
         other.back_ = 0;
         other.data_ = nullptr;
+        return *this;
     }
 
     ~ABDQ() {
