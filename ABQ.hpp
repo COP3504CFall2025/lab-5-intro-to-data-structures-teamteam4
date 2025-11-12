@@ -125,6 +125,16 @@ public:
             array_[i] = array_[i+1];
         }
         curr_size_--;
+        if (curr_size_ <= capacity_/4){
+            std::size_t oldCapacity = capacity_;
+            capacity_ /= 2;
+            T* tempArray = new T[capacity_];
+            for (std::size_t i = 0 ; i < curr_size_; i++){
+                tempArray[i] = array_[i];
+            }
+            delete[] array_;
+            array_ = tempArray;
+        }
         return temp;
     }
 
