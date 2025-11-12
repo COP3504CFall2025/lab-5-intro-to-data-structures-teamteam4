@@ -66,13 +66,17 @@ public:
 
 	// Removal
 	bool removeHead(){
-		if (head == nullptr) {return false;};
+		if (head == nullptr) {return false;}
 		Node* old = head;
 		head = head->next;
 		delete old;
 		count--;
-		if (head == nullptr) {tail = nullptr;}
-		else {head->prev = nullptr;}
+		if (head == nullptr){
+			tail = nullptr;
+		}
+		else {
+			head->prev = nullptr;
+		}
 		return true;
 	}
 
@@ -87,7 +91,7 @@ public:
 		return true;
 	}
 
-	void Clear(){
+	void clear(){
 		while (head != nullptr){
 			removeHead();
 		}
@@ -98,7 +102,7 @@ public:
 		if (this == &other){
 			return *this;
 		}
-		Clear();
+		clear();
 		head = other.head;
 		tail = other.tail;
 		count = other.count;
@@ -114,7 +118,7 @@ public:
 		if (this == &rhs){
 			return *this;
 		}
-		Clear();
+		clear();
 		Node* current = rhs.head;
 		while(current != nullptr){
 			addTail(current->data);
@@ -145,7 +149,7 @@ public:
 	}
 
 	~LinkedList(){
-		Clear();
+		clear();
 	}
 
 private:

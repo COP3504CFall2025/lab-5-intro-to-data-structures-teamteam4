@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 #include <cstddef>
 #include <stdexcept>
 #include "Interfaces.hpp"
@@ -63,13 +63,13 @@ public:
 			return *this;
 		}
         delete[] array_;
-        array_ = other.array_;
-        capacity_ = other.capacity_;
-        curr_size_ = other.curr_size_;
+        array_ = rhs.array_;
+        capacity_ = rhs.capacity_;
+        curr_size_ = rhs.curr_size_;
 
-        other.array_ = nullptr;
-        other.capacity_ = 0;
-        other.curr_size_ = 0;
+        rhs.array_ = nullptr;
+        rhs.capacity_ = 0;
+        rhs.curr_size_ = 0;
 
         return *this;
     }

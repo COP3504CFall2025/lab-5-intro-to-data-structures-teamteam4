@@ -32,11 +32,11 @@ public:
     ABDQ(const ABDQ& other){ //copy constructor
         capacity_ = other.capacity_;
         size_ = other.size_;
-        front_ = other.front_;
-        back_ = other.back_;
+        front_ = 0;
+        back_ = size_;
         data_ = new T[capacity_];
-        for (size_t i = 0 ; i < other.size_; i++){
-            data_[i] = other.data_[i];
+        for (std::size_t i = 0 ; i < other.size_; i++){
+            data_[i] = other.data_[(other.front_ + i) % other.capacity_];
         }
     }
 
@@ -63,11 +63,11 @@ public:
         delete[] data_;
         capacity_ = other.capacity_;
         size_ = other.size_;
-        front_ = other.front_;
-        back_ = other.back_;
+        front_ = 0;
+        back_ = size_;
         data_ = new T[capacity_];
-        for (size_t i = 0 ; i < other.size_; i++){
-            data_[i] = other.data_[i];
+        for (std::size_t i = 0 ; i < other.size_; i++){
+            data_[i] = other.data_[(other.front_ + i) % other.capacity_];
         }
     }
     ABDQ& operator=(ABDQ&& other) noexcept{ //move assignment
@@ -95,57 +95,66 @@ public:
 
     // Insertion
     void pushFront(const T& item) override{
-        front_--;
-        if (front_ == 0){
-            front_ = capacity_;
-        }
+        ensureCapacity();
+        front_ = (front_ - 1 + capacity_) % capacity_;
         data_[front_] = item;
-        size++;
+        size_++;
     }
     void pushBack(const T& item) override{
+        ensureCapacity();
         data_[back_] = item;
-        back_++;
-        if (back_ > capacity_){
-            back_ = 0;
-        }
-        size_--;
+        back_ = (back_ + 1) % capacity_;
+        size_++;
     }
 
     void ensureCapacity(){
         if (size_ == capacity_){
-            capacity_ *= 2;
+            std::size_t oldCapacity_ = capacity_;
+            capacity_ *= SCALE_FACTOR;
             T* tempArray = new T[capacity_];
-            for (size_t i = 0; i < size_; i++){
-                tempArray[i] = data_[i];
+
+            for (std::size_t i = 0 ; i < size_; i++){
+                tempArray[i] = data_[(front_ + i) % oldCapacity_];
             }
             delete[] data_;
             data_ = tempArray;
+            front_ = 0;
+            back_ = size_;
         }
     }
 
     void shrinkIfNeeded(){
-        if (size <= capacity_/2){
+        if (size_ <= capacity_/4){
+            std::size_t oldCapacity = capacity_;
             capacity_ /= 2;
             T* tempArray = new T[capacity_];
-            for (size_t i = 0; i < size_; i++){
-                tempArray[i] = data_[i];
+            for (std::size_t i = 0 ; i < size_; i++){
+                tempArray[i] = data_[(front_ + i) % oldCapacity];
             }
             delete[] data_;
             data_ = tempArray;
+            front_ = 0;
+            back_ = size_;
         }
     }
 
     // Deletion
     T popFront() override{
-        T temp = data_(front_);
-        front_++;
+        if (size_ == 0) {
+            throw std::runtime_error("Cannot pop an empty deque");
+        }
+        T temp = data_[front_];
+        front_ = (front_ + 1) % capacity_;
         size_--;
         return temp;
     }
 
     T popBack() override{
-        T temp = data_(back_);
-        back_--;
+        if (size_ == 0) {
+            throw std::runtime_error("Cannot pop an empty deque");
+        }
+        back_ = (back_ - 1 + capacity_) % capacity_;
+        T temp = data_[back_];
         size_--;
         return temp;
     }
@@ -153,11 +162,17 @@ public:
     
     // Access
     const T& front() const override{
-        return data_->front_;
+        if (size_ == 0) {
+            throw std::runtime_error("Cannot access an empty deque");
+        }
+        return data_[front_];
     }
 
     const T& back() const override{
-        return data_->back_;
+        if (size_ == 0) {
+            throw std::runtime_error("Cannot access an empty deque");
+        }
+        return data_[(back_ - 1 + capacity_) % capacity_];
     }
 
     // Getters
@@ -166,14 +181,14 @@ public:
     }
 
     void PrintForward() const{
-        for (size_t i = 0; i < curr_size_; i++){
-            std::cout << array_[i] << std::endl;
+        for (std::size_t i = 0; i < size_; i++){
+            std::cout << data_[(front_ + i) % capacity_] << std::endl;
         }
     }
 
     void PrintReverse() const{
-        for (int i = curr_size_ - 1; i >= 0; i--){
-            std::cout << array_[i] << std::endl;
+        for (int i = 0; i < size_; i++){
+            std::cout << data_[(back_ - 1 - i + capacity_) % capacity_] << std::endl;
         }
     }
 };
