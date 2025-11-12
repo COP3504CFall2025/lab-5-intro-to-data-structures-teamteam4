@@ -118,10 +118,6 @@ public:
         }
         T value = array_[curr_size_];
         curr_size_--;
-        if (capacity_ == 2 && size <= 1){
-            capacity_ = 1;
-            return;
-        }
         if (curr_size_ <= capacity_/4){
             std::size_t oldCapacity = capacity_;
             capacity_ /= 2;

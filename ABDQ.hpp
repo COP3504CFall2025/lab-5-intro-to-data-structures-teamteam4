@@ -114,7 +114,7 @@ public:
     void ensureCapacity(){
         if (size_ == capacity_){
             std::size_t oldCapacity_ = capacity_;
-            capacity_ = (capacity_ = 0) ? 1 : capacity_ *= SCALE_FACTOR;
+            capacity_ = (capacity_ == 0) ? 1 : capacity_ *= SCALE_FACTOR;
             T* tempArray = new T[capacity_];
             for (std::size_t i = 0 ; i < size_; i++){
                 tempArray[i] = data_[(front_ + i) % oldCapacity_];
