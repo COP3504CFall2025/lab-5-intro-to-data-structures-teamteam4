@@ -113,6 +113,10 @@ public:
 
     void ensureCapacity(){
         if (size_ == capacity_){
+            if (capacity_ == 0){
+                capacity_ = 1;
+                return;
+            }
             std::size_t oldCapacity_ = capacity_;
             capacity_ *= SCALE_FACTOR;
             T* tempArray = new T[capacity_];

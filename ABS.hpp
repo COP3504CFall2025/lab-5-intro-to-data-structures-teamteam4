@@ -116,7 +116,6 @@ public:
         if (curr_size_ == 0){
             throw std::runtime_error("Nothing in array to pop");
         }
-        capacity_--;
         curr_size_--;
         return array_[curr_size_];
     }

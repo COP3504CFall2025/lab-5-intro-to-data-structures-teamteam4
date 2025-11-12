@@ -124,7 +124,6 @@ public:
         for (size_t i = 0; i < curr_size_ - 1; i++){
             array_[i] = array_[i+1];
         }
-        capacity_--;
         curr_size_--;
         return temp;
     }
